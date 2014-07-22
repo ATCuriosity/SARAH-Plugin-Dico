@@ -1,0 +1,10 @@
+{
+  "modules": { 
+    "dico": {
+      "description": "Recherche définitions ou synonymes d'un mot (Internaute et Wikipédia)",
+      "version": "2.1",
+	  "Auteur": "Antoine THERY",
+	  "Mots_à_filtrer": "Sarah cherche sur Wikipédia dans le dictionnaire donne moi les synonymes de qu est ce un une"
+    }
+  }
+}

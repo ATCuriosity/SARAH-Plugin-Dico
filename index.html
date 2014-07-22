@@ -1,0 +1,76 @@
+<div id="dico">
+
+  <div class="row-fluid">
+    <div class="span11">
+      <p>Le plugin <b>dico</b> permet de demander à Sarah définition(s), synonyme(s) sur l'Internaute ou sur Wikipédia.</p>
+      
+      <p><b>/!\ Avant utilisation /!\</b></p>
+      
+	  <p>Suite à un problème d'encodage, il est indispensable d'ajouter le dossier <i>iconv-lite-master</i> (téléchargeable <a href="https://codeload.github.com/ashtuchkin/iconv-lite/zip/master">ici</a>) dans le dossier <i>...\S.A.R.A.H\NodeJS\node_modules\npm\node_modules</i></p>
+	  <br>
+	  
+      <p>Les phrases magiques sont :
+        <ul>
+		  <li><i>Sarah cherche * sur Wikipédia</i></li>
+          <li><i>Sarah cherche * dans le dictionnaire</i></li>
+          <li><i>Sarah donne-moi les synonymes de *</i></li>
+		  <li><i>Sarah qu'est-ce qu'un(e) *</i></li>
+		</ul>
+      </p>
+	  
+	  <p>Si vous modifiez ces phrases, vous devrez modifier les "Mots_à_filtrer" dans le fichier <i>dico.prop</i> (explication ci-dessous).<br><b>/!\ Mots séparés par des espaces /!\</b></p>
+	  <br>
+	  
+	  <p><b>Explication du plugin :</b></p>
+	  
+	  <p>Le script <i>dico.js</i> va tout d'abord identifier l'action qu'il devra effectuer :
+        <ul>
+		  <li>Si <i>"Wikipédia"</i> est prononcé lors de la demande : il ira sur Wikipédia</li>
+          <li>Si <i>"synonymes"</i> est prononcé lors de la demande : il ira sur l'Internaute chercher le(s) synonyme(s)</li>
+          <li>Si aucun de ces deux mots n'est prononcé lors de la demande : il ira par défault sur l'Internaute chercher la (les) définition(s)</li>
+		</ul>
+      </p>
+	  
+	  <p>Ensuite, le script filtrera la demande en fonction de l'action qu'il devra effectuer :
+        <ul>
+		  <li>Si Wikipédia : la recherche peut contenir plusieurs mots</li>
+          <li>Si Internaute : la recherche ne peut contenir qu'<b>un seul mot au singulier !</b></li>
+		</ul>
+      </p>
+	  
+	  <p>Mais pas d'inquiétude, le script s'en charge !
+	  <br>Il retirera tous les mots de la demande mentionnés dans les "Mots_à_filtrer" dans le fichier <i>dico.prop</i> pour ne garder que la recherche et vous avertira en cas de problème.
+	  <br>De plus, le script écrira dans la console la phrase prononcée ainsi que le sujet de la recherche obtenu après filtrage afin d'identifier facilement l'éventuelle erreur (les accents sont retirés pour les recherches sur l'Internaute).</p>
+      
+	  <p><b>Exemple :</b><br>
+	    Dans la console : <i>"Phrase prononcée : Sarah qu'est-ce qu'une voiture"</i><br>
+	    Mots_à_filtrer : "Sarah cherche sur Wikipédia dans le dictionnaire donne moi les synonymes de qu est ce un une"<br>
+	    Dans la console : <i>"Sujet de la recherche : voiture"</i>
+	  </p>
+	  <br>
+	  
+	  <p><b>Note :</b></p>
+	  
+	  <p>Dans le fichier <i>dico.xml</i>, seul le début de la phrase est mentionné :</p>
+      <pre>
+&lt;item&gt;Sarah&lt;/item&gt;
+
+  &lt;one-of&gt;
+    &lt;item&gt;cherche&lt;/item&gt;
+    &lt;item&gt;donne moi les synonymes de&lt;/item&gt;
+  &lt;/one-of&gt;
+
+  &lt;ruleref special="GARBAGE" /&gt;
+
+&lt;tag&gt;out.action._attributes.tts="je m'en occupe";&lt;/tag&gt;
+&lt;tag&gt;out.action._attributes.uri=&quot;http://127.0.0.1:8080/sarah/dico&quot;;&lt;/tag&gt;
+&lt;tag&gt;out.action._attributes.dictation=true;&lt;/tag&gt;
+      </pre>
+	  <p>Simplement parce que <code>special="GARBAGE"</code> (qui permet ici d'utiliser les mots non spécifiés) ne fonctionnait pas correctement si j'y spécifiais la fin de la phrase.</p>
+	  <br>
+	  
+	  <p><b>Bon amusement !!!</b><br>Antoine</p>
+    </div>
+  </div>
+
+</div>

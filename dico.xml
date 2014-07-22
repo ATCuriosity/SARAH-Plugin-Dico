@@ -1,0 +1,27 @@
+﻿<grammar version="1.0" xml:lang="fr-FR" mode="voice" root="ruleDico" xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0">
+  <rule id="ruleDico" scope="public">
+
+<example>Sarah cherche *** sur Wikipédia</example>
+<example>Sarah cherche *** dans le dictionnaire</example>
+<example>Sarah donne-moi les synonymes de *** </example>
+<example>Sarah qu'est-ce qu'un(e) *** </example>
+
+<tag>out.action=new Object(); </tag>
+
+<item>Sarah</item>
+
+<one-of>
+  <item>cherche</item>
+  <item>donne-moi les synonymes de</item>
+  <item>qu'est-ce qu'un</item>
+  <item>qu'est-ce qu'une</item>
+</one-of>
+
+  <ruleref special="GARBAGE" />
+
+<tag>out.action._attributes.tts="je m'en occupe";</tag>
+<tag>out.action._attributes.uri="http://127.0.0.1:8080/sarah/dico";</tag>
+<tag>out.action._attributes.dictation="true";</tag>
+
+</rule> 
+</grammar>
