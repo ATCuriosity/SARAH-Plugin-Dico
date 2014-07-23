@@ -12,7 +12,9 @@ var config = config.modules.dico;
   if(dictation.match('synonyme')){syn = true;}
   
   console.log('Phrase prononcée : ' + dictation);
-  var search = dictation.replace(/'/g,' ').replace(/-/g,' ').split(' ');
+  var search = dictation;
+  if(wiki == false){search = search.replace(/'/g,' ').replace(/-/g,' ');}
+  search = search.split(' ');
   var words = config.Mots_à_filtrer.split(' ');
   for(i=0;i<search.length;i++){
     for(e=0;e<words.length;e++){
@@ -23,11 +25,11 @@ var config = config.modules.dico;
   search = a;
   if(search.length > 1 && wiki == false){
     return callback({'tts': "Il y a une erreur dans la demande, veillez la reformuler"});}
-  else if(search.length > 1){search = search.join(' ');}
+  if(search.length > 1){search = search.join(' ');}
   if (search.length == 1){
     search = search.toString();
-    search = search.replace(/é/g,'e').replace(/è/g,'e').replace(/ê/g,'e').replace(/à/g,'a');
-  }
+    if (wiki == false){
+      search = search.replace(/é/g,'e').replace(/è/g,'e').replace(/ê/g,'e').replace(/à/g,'a');}}
   console.log('Sujet de la recherche : ' + search);
   if(search.length < 1){
     return callback({'tts': "Il y a une erreur dans la demande, veillez la reformuler"});}
@@ -57,7 +59,7 @@ var Dico = function(syn, search, callback){
       answer = "J'ai trouvé " + list.length + " définitions, , , ";
       if(list.length == 1){answer = "J'ai trouvé une définition. " + list[0];}
       else {for(i=0;i<list.length;i++){answer = answer + "Sens "+(i+1)+" : "+list[i]+" , , ";}}
-      if(list.length == 0){answer = "Je n'ai pas trouvé de définition pour le mot "+search+" .";}
+      if(list.length == 0){answer = "Je n'ai pas trouvé de définition pour le mot "+search+".";}
     }
     
     if (syn == true){
@@ -72,7 +74,7 @@ var Dico = function(syn, search, callback){
       answer = "J'ai trouvé " + result.length + " synonymes, , , ";
       if(result.length == 1){answer = answer + result[0];}
       else {answer = answer + result.join(", , ");}
-      if(result.length == 0){answer = "Je n'ai pas trouvé de synonyme pour le mot "+search+" .";}
+      if(result.length == 0){answer = "Je n'ai pas trouvé de synonyme pour le mot "+search+".";}
     }
     
     if (answer == '') {return callback({'tts': "L'action a échoué"});}
@@ -90,14 +92,16 @@ var Wiki = function(search, callback){
       return;
     }
     
-    var extract = '';
     var txt = '';
-    extract = getFirst(body.query.pages).extract;
-    var list = extract.replace(/</g,'*').replace(/>/g,'*').split('*');
+    var extract = getFirst(body.query.pages).extract;
+	
+	if(!extract){return callback({'tts': "Je n'ai rien trouvé sur Wikipédia pour "+search+"."});}
+	
+	var list = extract.replace(/</g,'*').replace(/>/g,'*').split('*');
     for(i=0;i<list.length;i=i+2){txt = txt + list[i];}
     txt = txt.split('. ')[0] + '.';
 
-    if(txt.length < 1){callback({'tts': "L'action a échoué" });    }
+    if(txt.length < 1){return callback({'tts': "L'action a échoué" });}
     else{callback({'tts': txt });}
   });
 }
